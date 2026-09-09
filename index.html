@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tirsopjon Snack - Keripik Pangsit & Makaroni Kering</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brandRed: '#D32F2F',
+                        brandRedDark: '#B71C1C',
+                        brandYellow: '#FBC02D',
+                        brandYellowLight: '#FFF8E1',
+                    },
+                    fontFamily: {
+                        poppins: ['Poppins', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Font Awesome Icons & Google Fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS untuk Efek Fade/Blend Foto ke Background & Animasi Musik -->
+    <style>
+        :root {
+            --brand-red: #D32F2F;
+            --brand-red-dark: #B71C1C;
+            --brand-yellow: #FBC02D;
+            --brand-yellow-light: #FFF8E1;
+        }
+        .text-brandRed { color: var(--brand-red); }
+        .bg-brandRed { background-color: var(--brand-red); }
+        .hover\:bg-brandRedDark:hover { background-color: var(--brand-red-dark); }
+        .text-brandYellow { color: var(--brand-yellow); }
+        .bg-brandYellow { background-color: var(--brand-yellow); }
+        .border-brandYellow { border-color: var(--brand-yellow); }
+        button, a { transition: all 0.2s ease-in-out; }
+
+        /* Efek memudarkan bagian bawah foto agar menyatu halus dengan background */
+        .fade-bottom-mask {
+            -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 65%, rgba(0,0,0,0) 100%);
+            mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 65%, rgba(0,0,0,0) 100%);
+        }
+
+        /* Animasi berputar untuk tombol musik saat lagu berputar */
+        @keyframes spin-slow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .animate-spin-slow {
+            animation: spin-slow 8s linear infinite;
+        }
+    </style>
+</head>
+<body class="font-poppins bg-gray-50 text-gray-800 antialiased selection:bg-brandYellow selection:text-black">
+
+    <!-- Audio Element untuk Musik -->
+    <!-- Ganti 'backsound.mp3' dengan nama file lagu atau URL musik yang kamu inginkan -->
+    <audio id="bg-music" loop>
+        <source src="musik.mp3" type="audio/mpeg">
+        Browser Anda tidak mendukung elemen audio.
+    </audio>
+
+    <!-- Tombol Musik Melayang di Pojok Kiri Bawah -->
+    <div class="fixed bottom-6 left-6 z-50 flex items-center gap-3">
+        <button id="music-toggle-btn" onclick="toggleMusic()" class="relative bg-brandRed hover:bg-brandRedDark text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center border-2 border-brandYellow focus:outline-none transition-transform hover:scale-110 active:scale-95 group">
+            <!-- Icon Disk Musik -->
+            <i id="music-icon" class="fas fa-music text-xl"></i>
+            
+            <!-- Ring animasi berdenyut ketika musik mati/nyala -->
+            <span id="music-pulse" class="hidden absolute -inset-1 rounded-full bg-brandYellow/40 -z-10 animate-ping"></span>
+        </button>
+        
+        <!-- Label Petunjuk (Muncul Hover) -->
+        <span id="music-status" class="bg-gray-900/80 backdrop-blur-md text-white text-xs font-semibold px-3 py-1.5 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none hidden sm:inline-block">
+            Putar Musik 🎵
+        </span>
+    </div>
+
+    <!-- Header / Navbar -->
+    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md shadow-sm border-b border-gray-100">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            
+            <!-- Logo -->
+            <a href="#" class="flex items-center gap-3 group">
+                <img src="LOGO.png" alt="Tirsopjon Snack Logo" class="w-12 h-12 rounded-full border-2 border-brandYellow object-cover shadow-sm group-hover:scale-105 transition-transform duration-200" onerror="this.src='https://via.placeholder.com/150'">
+                <span class="font-extrabold text-xl sm:text-2xl tracking-tight text-brandRed">
+                    Tirsopjon <span class="text-brandYellow">Snack</span>
+                </span>
+            </a>
+
+            <!-- Nav Desktop -->
+            <nav class="hidden md:flex items-center gap-8 font-medium text-gray-600">
+                <a href="#home" class="hover:text-brandRed transition-colors">Beranda</a>
+                <a href="#produk" class="hover:text-brandRed transition-colors">Produk</a>
+                <a href="#keunggulan" class="hover:text-brandRed transition-colors">Keunggulan</a>
+            </nav>
+
+            <!-- Tombol Keranjang -->
+            <button onclick="toggleCart()" class="relative bg-red-50 hover:bg-red-100 p-3 rounded-full text-brandRed transition-all duration-200 focus:outline-none">
+                <i class="fas fa-shopping-basket text-xl"></i>
+                <span id="cart-count" class="absolute -top-1 -right-1 bg-brandYellow text-gray-900 font-bold text-xs w-5 h-5 rounded-full flex items-center justify-center border-2 border-white shadow-sm">0</span>
+            </button>
+
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative overflow-hidden bg-gradient-to-b from-red-50/60 via-white to-gray-50 pt-12 pb-20 lg:pt-20 lg:pb-28">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center gap-12">
+            
+            <div class="flex-1 text-center md:text-left space-y-6">
+                <span class="inline-block bg-brandYellow/20 text-yellow-800 text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider">
+                     Cita Rasa Khas & Renyah Gurih
+                </span>
+                <h1 class="text-3xl sm:text-5xl font-extrabold text-gray-900 leading-tight">
+                    Ngemil Makin Asik dengan <span class="text-brandRed">Tirsopjon Snack!</span>
+                </h1>
+                <p class="text-gray-600 text-base sm:text-lg max-w-xl">
+                    Nikmati kelezatan <strong>Keripik Pangsit</strong> & <strong>Makaroni Kering</strong> super renyah dengan 4 varian rasa favorit yang bikin ketagihan!
+                </p>
+                <div class="pt-2 flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                    <a href="#produk" class="bg-brandRed hover:bg-brandRedDark text-white font-bold px-8 py-4 rounded-xl shadow-lg shadow-red-500/30 hover:shadow-red-500/50 transition-all text-center">
+                        <i class="fas fa-store mr-2"></i> Pilih Varian Snack
+                    </a>
+                </div>
+            </div>
+
+            <div class="flex-1 flex justify-center relative">
+                <div class="absolute -inset-4 bg-brandYellow/30 rounded-full blur-2xl -z-10"></div>
+                <img src="LOGO.png" alt="Tirsopjon Logo" class="w-64 h-64 sm:w-80 sm:h-80 rounded-full border-4 border-white shadow-2xl object-cover hover:rotate-3 transition-transform duration-300" onerror="this.src='https://via.placeholder.com/300'">
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Section Produk -->
+    <section id="produk" class="py-12 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Header Produk + Foto Owner Besar Memudar Ke Background -->
+        <div class="text-center max-w-3xl mx-auto mb-10 flex flex-col items-center">
+            
+            <!-- Wadah Foto Owner Besar Tanpa Bingkai -->
+            <div class="relative w-full max-w-md h-72 sm:h-96 -mb-6 flex justify-center items-end overflow-hidden">
+                <img src="ownerrr.png" alt="Owner Tirsopjon Snack" class="w-full h-full object-contain fade-bottom-mask" onerror="this.src='LOGO.png'">
+            </div>
+
+            <!-- Teks Judul -->
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-gray-900 relative z-10">Pilihan Produk Kami</h2>
+            <p class="text-gray-500 mt-2 text-base">Pilih varian rasa dan ukuran kemasan sesuai selera kamu!</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            
+            <!-- Card 1: Keripik Pangsit -->
+            <div class="bg-white rounded-2xl border border-gray-100 shadow-xl shadow-gray-100 overflow-hidden hover:border-brandYellow transition-all duration-300 flex flex-col group">
+                
+                <div class="relative h-56 bg-gradient-to-r from-red-500 to-brandRed overflow-hidden flex items-end">
+                    <img id="card-img-pangsit" src="pangsitt.jpeg" alt="Keripik Pangsit" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.src='https://via.placeholder.com/400x250?text=Keripik+Pangsit'">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+                    <span class="absolute top-4 right-4 bg-brandYellow text-gray-900 text-xs font-bold px-3 py-1 rounded-full shadow z-10">Best Seller</span>
+                    <div class="relative z-10 p-6 text-white w-full">
+                        <h3 class="text-2xl font-bold tracking-wide drop-shadow-md">Keripik Pangsit</h3>
+                    </div>
+                </div>
+                
+                <div class="p-6 flex-1 flex flex-col justify-between space-y-6">
+                    <p class="text-gray-600 text-sm leading-relaxed">
+                        Keripik pangsit renyah dan gurih khas Tirsopjon, diolah dengan rempah pilihan dan bumbu melimpah.
+                    </p>
+
+                    <!-- Form Pilihan -->
+                    <div class="space-y-4 bg-gray-50 p-4 rounded-xl border border-gray-100">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">Varian Rasa</label>
+                            <select id="flavor-pangsit" onchange="updateProductImage('pangsit')" class="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brandRed">
+                                <option value="Original" data-img="pangori.jpeg">Original (Gurih Asli)</option>
+                                <option value="Pedas" data-img="pangdes.jpeg">Pedas 🔥</option>
+                                <option value="Keju Manis" data-img="pangkenis.jpeg">Keju Manis 🧀</option>
+                                <option value="Jagung Manis" data-img="pangjanis.jpeg">Jagung Manis 🌽</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">Ukuran Kemasan</label>
+                            <select id="size-pangsit" onchange="updatePrice('pangsit')" class="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brandRed">
+                                <option value="200g">200 Gram - Rp 13.000</option>
+                                <option value="400g">400 Gram - Rp 25.000</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Harga & Action -->
+                    <div class="flex items-center justify-between pt-2">
+                        <div>
+                            <span class="text-xs text-gray-400 block">Harga</span>
+                            <span id="price-pangsit" class="text-2xl font-extrabold text-brandRed">Rp 13.000</span>
+                        </div>
+                        <button onclick="addToCart('Keripik Pangsit', 'flavor-pangsit', 'size-pangsit')" class="bg-brandYellow hover:bg-yellow-400 text-gray-900 font-bold px-5 py-3 rounded-xl transition-all flex items-center gap-2 shadow-md hover:shadow-lg">
+                            <i class="fas fa-cart-plus"></i> Tambah
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2: Makaroni Kering -->
+            <div class="bg-white rounded-2xl border border-gray-100 shadow-xl shadow-gray-100 overflow-hidden hover:border-brandYellow transition-all duration-300 flex flex-col group">
+                
+                <div class="relative h-56 bg-gradient-to-r from-red-500 to-brandRed overflow-hidden flex items-end">
+                    <img id="card-img-makaroni" src="makaroni.jpeg" alt="Makaroni Kering" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.src='https://via.placeholder.com/400x250?text=Makaroni+Kering'">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+                    <span class="absolute top-4 right-4 bg-brandYellow text-gray-900 text-xs font-bold px-3 py-1 rounded-full shadow z-10">Favorit</span>
+                    <div class="relative z-10 p-6 text-white w-full">
+                        <h3 class="text-2xl font-bold tracking-wide drop-shadow-md">Makaroni Kering</h3>
+                    </div>
+                </div>
+                
+                <div class="p-6 flex-1 flex flex-col justify-between space-y-6">
+                    <p class="text-gray-600 text-sm leading-relaxed">
+                        Makaroni garing dengan tekstur pas di lidah, dibalut bumbu melimpah yang bikin ketagihan.
+                    </p>
+
+                    <!-- Form Pilihan -->
+                    <div class="space-y-4 bg-gray-50 p-4 rounded-xl border border-gray-100">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">Varian Rasa</label>
+                            <select id="flavor-makaroni" onchange="updateProductImage('makaroni')" class="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brandRed">
+                                <option value="Original" data-img="makori.jpeg">Original (Gurih Asli)</option>
+                                <option value="Pedas" data-img="makped.jpeg">Pedas 🔥</option>
+                                <option value="Keju Manis" data-img="makenis.jpeg">Keju Manis 🧀</option>
+                                <option value="Jagung Manis" data-img="makjanis.jpeg">Jagung Manis 🌽</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">Ukuran Kemasan</label>
+                            <select id="size-makaroni" onchange="updatePrice('makaroni')" class="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brandRed">
+                                <option value="200g">200 Gram - Rp 13.000</option>
+                                <option value="400g">400 Gram - Rp 25.000</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Harga & Action -->
+                    <div class="flex items-center justify-between pt-2">
+                        <div>
+                            <span class="text-xs text-gray-400 block">Harga</span>
+                            <span id="price-makaroni" class="text-2xl font-extrabold text-brandRed">Rp 13.000</span>
+                        </div>
+                        <button onclick="addToCart('Makaroni Kering', 'flavor-makaroni', 'size-makaroni')" class="bg-brandYellow hover:bg-yellow-400 text-gray-900 font-bold px-5 py-3 rounded-xl transition-all flex items-center gap-2 shadow-md hover:shadow-lg">
+                            <i class="fas fa-cart-plus"></i> Tambah
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- SECTION KEUNGGULAN -->
+    <section id="keunggulan" class="bg-white py-16 border-t border-gray-100">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-extrabold text-gray-900 text-center mb-12">Mengapa Memilih Tirsopjon Snack?</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Keunggulan 1 -->
+                <div class="text-center p-6 rounded-2xl bg-gray-50 border border-gray-100 space-y-3 hover:shadow-md transition-shadow">
+                    <div class="w-14 h-14 bg-red-100 text-brandRed rounded-2xl flex items-center justify-center text-2xl mx-auto">
+                        <i class="fas fa-award"></i>
+                    </div>
+                    <h3 class="font-bold text-lg text-gray-800">Bahan Premium</h3>
+                    <p class="text-gray-500 text-sm">Dibuat dengan bahan baku terbaik, minyak bersih, dan higiene terjamin.</p>
+                </div>
+
+                <!-- Keunggulan 2 -->
+                <div class="text-center p-6 rounded-2xl bg-gray-50 border border-gray-100 space-y-3 hover:shadow-md transition-shadow">
+                    <div class="w-14 h-14 bg-yellow-100 text-yellow-700 rounded-2xl flex items-center justify-center text-2xl mx-auto">
+                        <i class="fas fa-pepper-hot"></i>
+                    </div>
+                    <h3 class="font-bold text-lg text-gray-800">Bumbu Melimpah</h3>
+                    <p class="text-gray-500 text-sm">4 Pilihan rasa favorit yang bumbunya meresap sempurna sampai gigitan terakhir.</p>
+                </div>
+
+                <!-- Keunggulan 3 -->
+                <div class="text-center p-6 rounded-2xl bg-gray-50 border border-gray-100 space-y-3 hover:shadow-md transition-shadow">
+                    <div class="w-14 h-14 bg-red-100 text-brandRed rounded-2xl flex items-center justify-center text-2xl mx-auto">
+                        <i class="fas fa-box"></i>
+                    </div>
+                    <h3 class="font-bold text-lg text-gray-800">Kemasan Sealed</h3>
+                    <p class="text-gray-500 text-sm">Dikemas rapat higienis dengan 2 pilihan ukuran (200g & 400g) agar tetap renyah.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Drawer / Sidebar Keranjang Belanja -->
+    <div id="cart-drawer" class="fixed inset-0 z-50 overflow-hidden pointer-events-none transition-all duration-300">
+        <div id="cart-backdrop" onclick="toggleCart()" class="absolute inset-0 bg-gray-900/50 opacity-0 transition-opacity duration-300"></div>
+
+        <aside class="absolute inset-y-0 right-0 max-w-full flex pl-10">
+            <div id="cart-panel" class="w-screen max-w-md bg-white shadow-2xl flex flex-col translate-x-full transition-transform duration-300 ease-in-out pointer-events-auto">
+                
+                <div class="p-6 bg-brandRed text-white flex items-center justify-between">
+                    <h3 class="text-lg font-bold flex items-center gap-2">
+                        <i class="fas fa-shopping-bag"></i> Keranjang Belanja
+                    </h3>
+                    <button onclick="toggleCart()" class="text-white hover:text-brandYellow text-2xl focus:outline-none">&times;</button>
+                </div>
+
+                <div id="cart-items" class="flex-1 p-6 overflow-y-auto space-y-4">
+                    <p class="text-center text-gray-400 py-10">Keranjang belanja Anda masih kosong.</p>
+                </div>
+
+                <div class="p-6 border-t border-gray-100 bg-gray-50 space-y-4">
+                    <div class="flex justify-between items-center text-lg font-bold text-gray-800">
+                        <span>Total Pembayaran:</span>
+                        <span id="cart-total" class="text-brandRed">Rp 0</span>
+                    </div>
+
+                    <button onclick="checkoutWA()" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3.5 rounded-xl transition-all shadow-md flex items-center justify-center gap-2">
+                        <i class="fab fa-whatsapp text-xl"></i> Pesan via WhatsApp
+                    </button>
+                </div>
+
+            </div>
+        </aside>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400 py-8 text-center text-sm border-t border-gray-800">
+        <p class="text-white font-semibold">Tirsopjon Snack &copy; 2026. All Rights Reserved.</p>
+    </footer>
+
+    <!-- JAVASCRIPT UTAMA -->
+    <script>
+        const NOMOR_WHATSAPP = "6283183104080"; 
+
+        const HARGA = {
+            '200g': 13000,
+            '400g': 25000
+        };
+
+        let cart = [];
+
+        /* --- FUNGSI MUSIK --- */
+        let isPlaying = false;
+        const music = document.getElementById('bg-music');
+        const musicIcon = document.getElementById('music-icon');
+        const musicPulse = document.getElementById('music-pulse');
+        const musicStatus = document.getElementById('music-status');
+
+        function toggleMusic() {
+            if (isPlaying) {
+                music.pause();
+                musicIcon.className = "fas fa-music text-xl";
+                musicIcon.classList.remove("animate-spin-slow");
+                musicPulse.classList.add("hidden");
+                if (musicStatus) musicStatus.innerText = "Putar Musik 🎵";
+                isPlaying = false;
+            } else {
+                music.play().then(() => {
+                    musicIcon.className = "fas fa-compact-disc text-2xl animate-spin-slow";
+                    musicPulse.classList.remove("hidden");
+                    if (musicStatus) musicStatus.innerText = "Jeda Musik ⏸️";
+                    isPlaying = true;
+                }).catch(err => {
+                    console.log("Autoplay tercegah browser, butuh interaksi pengguna.", err);
+                });
+            }
+        }
+
+        function formatRupiah(num) {
+            return 'Rp ' + num.toLocaleString('id-ID');
+        }
+
+        // Mengubah gambar pada card saat memilih varian rasa
+        function updateProductImage(productKey) {
+            const rasaSelect = document.getElementById(`flavor-${productKey}`);
+            const cardImg = document.getElementById(`card-img-${productKey}`);
+            
+            if (rasaSelect && cardImg) {
+                const selectedOption = rasaSelect.options[rasaSelect.selectedIndex];
+                const newImgSrc = selectedOption.getAttribute('data-img');
+                if (newImgSrc) {
+                    cardImg.src = newImgSrc;
+                }
+            }
+        }
+
+        function updatePrice(productKey) {
+            const sizeSelect = document.getElementById(`size-${productKey}`);
+            const priceDisplay = document.getElementById(`price-${productKey}`);
+            
+            if (sizeSelect && priceDisplay) {
+                const selectedSize = sizeSelect.value;
+                if (HARGA[selectedSize]) {
+                    priceDisplay.innerText = formatRupiah(HARGA[selectedSize]);
+                }
+            }
+        }
+
+        function toggleCart() {
+            const drawer = document.getElementById('cart-drawer');
+            const backdrop = document.getElementById('cart-backdrop');
+            const panel = document.getElementById('cart-panel');
+
+            if (!drawer || !backdrop || !panel) return;
+
+            if (drawer.classList.contains('pointer-events-none')) {
+                drawer.classList.remove('pointer-events-none');
+                backdrop.classList.remove('opacity-0');
+                panel.classList.remove('translate-x-full');
+            } else {
+                drawer.classList.add('pointer-events-none');
+                backdrop.classList.add('opacity-0');
+                panel.classList.add('translate-x-full');
+            }
+        }
+
+        function addToCart(namaProduk, idRasa, idUkuran) {
+            const rasaEl = document.getElementById(idRasa);
+            const ukuranEl = document.getElementById(idUkuran);
+
+            if (!rasaEl || !ukuranEl) return;
+
+            const selectedOption = rasaEl.options[rasaEl.selectedIndex];
+            const rasa = rasaEl.value;
+            const ukuran = ukuranEl.value;
+            const harga = HARGA[ukuran];
+            
+            // Mengambil nama file gambar yang sesuai dengan varian rasa yang dipilih
+            const fotoProduk = selectedOption.getAttribute('data-img') || (namaProduk.includes('Pangsit') ? 'keripik-pangsit.jpg' : 'makaroni-kering.jpg');
+
+            const item = {
+                id: Date.now(),
+                nama: namaProduk,
+                rasa: rasa,
+                ukuran: ukuran,
+                harga: harga,
+                foto: fotoProduk
+            };
+
+            cart.push(item);
+            renderCart();
+            toggleCart();
+        }
+
+        function removeFromCart(id) {
+            cart = cart.filter(item => item.id !== id);
+            renderCart();
+        }
+
+        function renderCart() {
+            const cartItemsContainer = document.getElementById('cart-items');
+            const cartCount = document.getElementById('cart-count');
+            const cartTotal = document.getElementById('cart-total');
+
+            if (!cartItemsContainer || !cartCount || !cartTotal) return;
+
+            cartCount.innerText = cart.length;
+
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = `
+                    <div class="text-center py-10 text-gray-400">
+                        <i class="fas fa-shopping-basket text-4xl mb-3 opacity-40"></i>
+                        <p class="text-sm">Keranjang belanja Anda masih kosong.</p>
+                    </div>
+                `;
+                cartTotal.innerText = 'Rp 0';
+                return;
+            }
+
+            cartItemsContainer.innerHTML = '';
+            let total = 0;
+
+            cart.forEach(item => {
+                total += item.harga;
+                const div = document.createElement('div');
+                div.className = 'flex items-center gap-3 p-3 bg-gray-50 rounded-xl border border-gray-100 shadow-sm';
+                div.innerHTML = `
+                    <img src="${item.foto}" alt="${item.nama}" class="w-14 h-14 object-cover rounded-lg border border-gray-200" onerror="this.src='LOGO.png'">
+                    <div class="flex-1">
+                        <h4 class="font-bold text-gray-800 text-sm">${item.nama} (${item.ukuran})</h4>
+                        <p class="text-xs text-gray-500">Rasa: <span class="font-medium text-brandRed">${item.rasa}</span></p>
+                        <p class="text-xs font-bold text-gray-800 mt-1">${formatRupiah(item.harga)}</p>
+                    </div>
+                    <button onclick="removeFromCart(${item.id})" class="text-gray-400 hover:text-red-600 p-2 text-sm transition-colors">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                `;
+                cartItemsContainer.appendChild(div);
+            });
+
+            cartTotal.innerText = formatRupiah(total);
+        }
+
+        function checkoutWA() {
+            if (cart.length === 0) {
+                alert('Keranjang Anda masih kosong!');
+                return;
+            }
+
+            let pesan = "Halo *Tirsopjon Snack*, saya mau pesan snack:\n\n";
+            let total = 0;
+
+            cart.forEach((item, index) => {
+                pesan += `${index + 1}. *${item.nama}*\n`;
+                pesan += `   • Ukuran: ${item.ukuran}\n`;
+                pesan += `   • Rasa: ${item.rasa}\n`;
+                pesan += `   • Harga: ${formatRupiah(item.harga)}\n\n`;
+                total += item.harga;
+            });
+
+            pesan += `=========================\n`;
+            pesan += `*Total Belanja:* ${formatRupiah(total)}\n`;
+            pesan += `=========================\n\n`;
+            pesan += "Mohon diproses ya kak, terima kasih!";
+
+            const url = `https://wa.me/${NOMOR_WHATSAPP}?text=${encodeURIComponent(pesan)}`;
+            window.open(url, '_blank');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updatePrice('pangsit');
+            updatePrice('makaroni');
+        });
+    </script>
+</body>
+</html>

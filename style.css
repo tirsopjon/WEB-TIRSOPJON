@@ -1,0 +1,38 @@
+:root {
+    --brand-red: #D32F2F;
+    --brand-red-dark: #B71C1C;
+    --brand-yellow: #FBC02D;
+    --brand-yellow-light: #FFF8E1;
+}
+
+.text-brandRed {
+    color: var(--brand-red);
+}
+
+.bg-brandRed {
+    background-color: var(--brand-red);
+}
+
+.hover\:bg-brandRedDark:hover {
+    background-color: var(--brand-red-dark);
+}
+
+.text-brandYellow {
+    color: var(--brand-yellow);
+}
+
+.bg-brandYellow {
+    background-color: var(--brand-yellow);
+}
+
+.border-brandYellow {
+    border-color: var(--brand-yellow);
+}
+
+.hover\:border-brandYellow:hover {
+    border-color: var(--brand-yellow);
+}
+
+button, a {
+    transition: all 0.2s ease-in-out;
+}
