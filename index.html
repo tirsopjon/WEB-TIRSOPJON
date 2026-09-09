@@ -9,6 +9,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
@@ -29,7 +30,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
-    <!-- Custom CSS untuk Efek Fade/Blend Foto ke Background & Animasi Musik -->
+    <!-- Custom CSS -->
     <style>
         :root {
             --brand-red: #D32F2F;
@@ -45,13 +46,11 @@
         .border-brandYellow { border-color: var(--brand-yellow); }
         button, a { transition: all 0.2s ease-in-out; }
 
-        /* Efek memudarkan bagian bawah foto agar menyatu halus dengan background */
         .fade-bottom-mask {
             -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 65%, rgba(0,0,0,0) 100%);
             mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 65%, rgba(0,0,0,0) 100%);
         }
 
-        /* Animasi berputar untuk tombol musik saat lagu berputar */
         @keyframes spin-slow {
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
@@ -61,33 +60,33 @@
         }
     </style>
 </head>
-<body class="font-poppins bg-gray-50 text-gray-800 antialiased selection:bg-brandYellow selection:text-black">
+<body class="font-poppins bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100 antialiased selection:bg-brandYellow selection:text-black transition-colors duration-300">
 
     <!-- Audio Element untuk Musik -->
-    <!-- Ganti 'backsound.mp3' dengan nama file lagu atau URL musik yang kamu inginkan -->
     <audio id="bg-music" loop>
-        <source src="musik.mp3" type="audio/mpeg">
+        <source src="musikk.mp3" type="audio/mpeg">
         Browser Anda tidak mendukung elemen audio.
     </audio>
 
-    <!-- Tombol Musik Melayang di Pojok Kiri Bawah -->
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed top-24 right-5 z-50 bg-gray-900 text-white px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 transition-all duration-300 transform translate-x-full opacity-0">
+        <i class="fas fa-check-circle text-green-400 text-xl"></i>
+        <span id="toast-message" class="text-sm font-medium">Berhasil ditambahkan!</span>
+    </div>
+
+    <!-- Tombol Musik Melayang -->
     <div class="fixed bottom-6 left-6 z-50 flex items-center gap-3">
         <button id="music-toggle-btn" onclick="toggleMusic()" class="relative bg-brandRed hover:bg-brandRedDark text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center border-2 border-brandYellow focus:outline-none transition-transform hover:scale-110 active:scale-95 group">
-            <!-- Icon Disk Musik -->
             <i id="music-icon" class="fas fa-music text-xl"></i>
-            
-            <!-- Ring animasi berdenyut ketika musik mati/nyala -->
             <span id="music-pulse" class="hidden absolute -inset-1 rounded-full bg-brandYellow/40 -z-10 animate-ping"></span>
         </button>
-        
-        <!-- Label Petunjuk (Muncul Hover) -->
         <span id="music-status" class="bg-gray-900/80 backdrop-blur-md text-white text-xs font-semibold px-3 py-1.5 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none hidden sm:inline-block">
             Putar Musik 🎵
         </span>
     </div>
 
     <!-- Header / Navbar -->
-    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md shadow-sm border-b border-gray-100">
+    <header class="sticky top-0 z-40 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-sm border-b border-gray-100 dark:border-gray-800 transition-colors">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
             
             <!-- Logo -->
@@ -99,45 +98,75 @@
             </a>
 
             <!-- Nav Desktop -->
-            <nav class="hidden md:flex items-center gap-8 font-medium text-gray-600">
+            <nav class="hidden md:flex items-center gap-8 font-medium text-gray-600 dark:text-gray-300">
                 <a href="#home" class="hover:text-brandRed transition-colors">Beranda</a>
                 <a href="#produk" class="hover:text-brandRed transition-colors">Produk</a>
                 <a href="#keunggulan" class="hover:text-brandRed transition-colors">Keunggulan</a>
             </nav>
 
-            <!-- Tombol Keranjang -->
-            <button onclick="toggleCart()" class="relative bg-red-50 hover:bg-red-100 p-3 rounded-full text-brandRed transition-all duration-200 focus:outline-none">
-                <i class="fas fa-shopping-basket text-xl"></i>
-                <span id="cart-count" class="absolute -top-1 -right-1 bg-brandYellow text-gray-900 font-bold text-xs w-5 h-5 rounded-full flex items-center justify-center border-2 border-white shadow-sm">0</span>
-            </button>
+            <div class="flex items-center gap-2 sm:gap-3">
+                <!-- Sosial Media Fast Access (Header) -->
+                <div class="flex items-center gap-1.5 border-r border-gray-200 dark:border-gray-700 pr-2 sm:pr-3">
+                    <a href="https://instagram.com/tirsopjon.snack" target="_blank" class="p-2 rounded-full text-pink-600 hover:bg-pink-50 dark:hover:bg-gray-800 transition-colors" title="Instagram">
+                        <i class="fab fa-instagram text-lg"></i>
+                    </a>
+                    <a href="https://tiktok.com/@tirsopjon.snack" target="_blank" class="p-2 rounded-full text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" title="TikTok">
+                        <i class="fab fa-tiktok text-lg"></i>
+                    </a>
+                </div>
+
+                <!-- Tombol Dark Mode Toggle -->
+                <button id="theme-toggle" onclick="toggleDarkMode()" class="p-2.5 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-yellow-400 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors focus:outline-none" title="Ubah Mode">
+                    <i id="theme-toggle-dark-icon" class="fas fa-moon text-lg hidden"></i>
+                    <i id="theme-toggle-light-icon" class="fas fa-sun text-lg hidden"></i>
+                </button>
+
+                <!-- Tombol Keranjang -->
+                <button onclick="toggleCart()" class="relative bg-red-50 dark:bg-gray-800 hover:bg-red-100 dark:hover:bg-gray-700 p-3 rounded-full text-brandRed transition-all duration-200 focus:outline-none">
+                    <i class="fas fa-shopping-basket text-xl"></i>
+                    <span id="cart-count" class="absolute -top-1 -right-1 bg-brandYellow text-gray-900 font-bold text-xs w-5 h-5 rounded-full flex items-center justify-center border-2 border-white dark:border-gray-900 shadow-sm">0</span>
+                </button>
+            </div>
 
         </div>
     </header>
 
     <!-- Hero Section -->
-    <section id="home" class="relative overflow-hidden bg-gradient-to-b from-red-50/60 via-white to-gray-50 pt-12 pb-20 lg:pt-20 lg:pb-28">
+    <section id="home" class="relative overflow-hidden bg-gradient-to-b from-red-50/60 via-white to-gray-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 pt-12 pb-20 lg:pt-20 lg:pb-28 transition-colors">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center gap-12">
             
             <div class="flex-1 text-center md:text-left space-y-6">
-                <span class="inline-block bg-brandYellow/20 text-yellow-800 text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider">
-                     Cita Rasa Khas & Renyah Gurih
+                <span class="inline-block bg-brandYellow/20 text-yellow-800 dark:text-yellow-300 text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider">
+                    Cita Rasa Khas & Renyah Gurih
                 </span>
-                <h1 class="text-3xl sm:text-5xl font-extrabold text-gray-900 leading-tight">
+                <h1 class="text-3xl sm:text-5xl font-extrabold text-gray-900 dark:text-white leading-tight">
                     Ngemil Makin Asik dengan <span class="text-brandRed">Tirsopjon Snack!</span>
                 </h1>
-                <p class="text-gray-600 text-base sm:text-lg max-w-xl">
+                <p class="text-gray-600 dark:text-gray-300 text-base sm:text-lg max-w-xl">
                     Nikmati kelezatan <strong>Keripik Pangsit</strong> & <strong>Makaroni Kering</strong> super renyah dengan 4 varian rasa favorit yang bikin ketagihan!
                 </p>
-                <div class="pt-2 flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-                    <a href="#produk" class="bg-brandRed hover:bg-brandRedDark text-white font-bold px-8 py-4 rounded-xl shadow-lg shadow-red-500/30 hover:shadow-red-500/50 transition-all text-center">
+                <div class="pt-2 flex flex-col sm:flex-row gap-4 justify-center md:justify-start items-center">
+                    <a href="#produk" class="w-full sm:w-auto bg-brandRed hover:bg-brandRedDark text-white font-bold px-8 py-4 rounded-xl shadow-lg shadow-red-500/30 hover:shadow-red-500/50 transition-all text-center">
                         <i class="fas fa-store mr-2"></i> Pilih Varian Snack
                     </a>
+                    
+                    <!-- Sosial Media Links di Hero -->
+                    <div class="flex items-center gap-3 pt-2 sm:pt-0">
+                        <a href="https://instagram.com/tirsopjon.snack" target="_blank" class="flex items-center gap-2 px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm hover:border-pink-500 hover:text-pink-600 transition-all text-sm font-semibold">
+                            <i class="fab fa-instagram text-pink-600 text-lg"></i>
+                            <span class="hidden sm:inline">Instagram</span>
+                        </a>
+                        <a href="https://tiktok.com/@tirsopjon.snack" target="_blank" class="flex items-center gap-2 px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm hover:border-gray-900 dark:hover:border-white transition-all text-sm font-semibold">
+                            <i class="fab fa-tiktok text-lg"></i>
+                            <span class="hidden sm:inline">TikTok</span>
+                        </a>
+                    </div>
                 </div>
             </div>
 
             <div class="flex-1 flex justify-center relative">
                 <div class="absolute -inset-4 bg-brandYellow/30 rounded-full blur-2xl -z-10"></div>
-                <img src="LOGO.png" alt="Tirsopjon Logo" class="w-64 h-64 sm:w-80 sm:h-80 rounded-full border-4 border-white shadow-2xl object-cover hover:rotate-3 transition-transform duration-300" onerror="this.src='https://via.placeholder.com/300'">
+                <img src="LOGO.png" alt="Tirsopjon Logo" class="w-64 h-64 sm:w-80 sm:h-80 rounded-full border-4 border-white dark:border-gray-800 shadow-2xl object-cover hover:rotate-3 transition-transform duration-300" onerror="this.src='https://via.placeholder.com/300'">
             </div>
 
         </div>
@@ -146,23 +175,19 @@
     <!-- Section Produk -->
     <section id="produk" class="py-12 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        <!-- Header Produk + Foto Owner Besar Memudar Ke Background -->
         <div class="text-center max-w-3xl mx-auto mb-10 flex flex-col items-center">
-            
-            <!-- Wadah Foto Owner Besar Tanpa Bingkai -->
             <div class="relative w-full max-w-md h-72 sm:h-96 -mb-6 flex justify-center items-end overflow-hidden">
-                <img src="ownerrr.png" alt="Owner Tirsopjon Snack" class="w-full h-full object-contain fade-bottom-mask" onerror="this.src='LOGO.png'">
+                <img src="owwner.png" alt="Owner Tirsopjon Snack" class="w-full h-full object-contain fade-bottom-mask" onerror="this.src='LOGO.png'">
             </div>
 
-            <!-- Teks Judul -->
-            <h2 class="text-3xl sm:text-4xl font-extrabold text-gray-900 relative z-10">Pilihan Produk Kami</h2>
-            <p class="text-gray-500 mt-2 text-base">Pilih varian rasa dan ukuran kemasan sesuai selera kamu!</p>
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-gray-900 dark:text-white relative z-10">Pilihan Produk Kami</h2>
+            <p class="text-gray-500 dark:text-gray-400 mt-2 text-base">Pilih varian rasa dan ukuran kemasan sesuai selera kamu!</p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             
             <!-- Card 1: Keripik Pangsit -->
-            <div class="bg-white rounded-2xl border border-gray-100 shadow-xl shadow-gray-100 overflow-hidden hover:border-brandYellow transition-all duration-300 flex flex-col group">
+            <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-xl shadow-gray-100 dark:shadow-none overflow-hidden hover:border-brandYellow transition-all duration-300 flex flex-col group">
                 
                 <div class="relative h-56 bg-gradient-to-r from-red-500 to-brandRed overflow-hidden flex items-end">
                     <img id="card-img-pangsit" src="pangsitt.jpeg" alt="Keripik Pangsit" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.src='https://via.placeholder.com/400x250?text=Keripik+Pangsit'">
@@ -174,15 +199,14 @@
                 </div>
                 
                 <div class="p-6 flex-1 flex flex-col justify-between space-y-6">
-                    <p class="text-gray-600 text-sm leading-relaxed">
+                    <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
                         Keripik pangsit renyah dan gurih khas Tirsopjon, diolah dengan rempah pilihan dan bumbu melimpah.
                     </p>
 
-                    <!-- Form Pilihan -->
-                    <div class="space-y-4 bg-gray-50 p-4 rounded-xl border border-gray-100">
+                    <div class="space-y-4 bg-gray-50 dark:bg-gray-900/50 p-4 rounded-xl border border-gray-100 dark:border-gray-700">
                         <div>
-                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">Varian Rasa</label>
-                            <select id="flavor-pangsit" onchange="updateProductImage('pangsit')" class="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brandRed">
+                            <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1.5">Varian Rasa</label>
+                            <select id="flavor-pangsit" onchange="updateProductImage('pangsit')" class="w-full bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brandRed">
                                 <option value="Original" data-img="pangori.jpeg">Original (Gurih Asli)</option>
                                 <option value="Pedas" data-img="pangdes.jpeg">Pedas 🔥</option>
                                 <option value="Keju Manis" data-img="pangkenis.jpeg">Keju Manis 🧀</option>
@@ -191,21 +215,29 @@
                         </div>
 
                         <div>
-                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">Ukuran Kemasan</label>
-                            <select id="size-pangsit" onchange="updatePrice('pangsit')" class="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brandRed">
+                            <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1.5">Ukuran Kemasan</label>
+                            <select id="size-pangsit" onchange="updatePrice('pangsit')" class="w-full bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brandRed">
                                 <option value="200g">200 Gram - Rp 13.000</option>
                                 <option value="400g">400 Gram - Rp 25.000</option>
                             </select>
                         </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1.5">Jumlah</label>
+                            <div class="flex items-center gap-3">
+                                <button onclick="adjustQty('pangsit', -1)" class="w-8 h-8 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 font-bold flex items-center justify-center">-</button>
+                                <span id="qty-pangsit" class="font-bold text-sm w-6 text-center">1</span>
+                                <button onclick="adjustQty('pangsit', 1)" class="w-8 h-8 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 font-bold flex items-center justify-center">+</button>
+                            </div>
+                        </div>
                     </div>
 
-                    <!-- Harga & Action -->
                     <div class="flex items-center justify-between pt-2">
                         <div>
                             <span class="text-xs text-gray-400 block">Harga</span>
                             <span id="price-pangsit" class="text-2xl font-extrabold text-brandRed">Rp 13.000</span>
                         </div>
-                        <button onclick="addToCart('Keripik Pangsit', 'flavor-pangsit', 'size-pangsit')" class="bg-brandYellow hover:bg-yellow-400 text-gray-900 font-bold px-5 py-3 rounded-xl transition-all flex items-center gap-2 shadow-md hover:shadow-lg">
+                        <button onclick="addToCart('Keripik Pangsit', 'flavor-pangsit', 'size-pangsit', 'qty-pangsit')" class="bg-brandYellow hover:bg-yellow-400 text-gray-900 font-bold px-5 py-3 rounded-xl transition-all flex items-center gap-2 shadow-md hover:shadow-lg">
                             <i class="fas fa-cart-plus"></i> Tambah
                         </button>
                     </div>
@@ -213,7 +245,7 @@
             </div>
 
             <!-- Card 2: Makaroni Kering -->
-            <div class="bg-white rounded-2xl border border-gray-100 shadow-xl shadow-gray-100 overflow-hidden hover:border-brandYellow transition-all duration-300 flex flex-col group">
+            <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-xl shadow-gray-100 dark:shadow-none overflow-hidden hover:border-brandYellow transition-all duration-300 flex flex-col group">
                 
                 <div class="relative h-56 bg-gradient-to-r from-red-500 to-brandRed overflow-hidden flex items-end">
                     <img id="card-img-makaroni" src="makaroni.jpeg" alt="Makaroni Kering" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.src='https://via.placeholder.com/400x250?text=Makaroni+Kering'">
@@ -225,15 +257,14 @@
                 </div>
                 
                 <div class="p-6 flex-1 flex flex-col justify-between space-y-6">
-                    <p class="text-gray-600 text-sm leading-relaxed">
+                    <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
                         Makaroni garing dengan tekstur pas di lidah, dibalut bumbu melimpah yang bikin ketagihan.
                     </p>
 
-                    <!-- Form Pilihan -->
-                    <div class="space-y-4 bg-gray-50 p-4 rounded-xl border border-gray-100">
+                    <div class="space-y-4 bg-gray-50 dark:bg-gray-900/50 p-4 rounded-xl border border-gray-100 dark:border-gray-700">
                         <div>
-                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">Varian Rasa</label>
-                            <select id="flavor-makaroni" onchange="updateProductImage('makaroni')" class="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brandRed">
+                            <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1.5">Varian Rasa</label>
+                            <select id="flavor-makaroni" onchange="updateProductImage('makaroni')" class="w-full bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brandRed">
                                 <option value="Original" data-img="makori.jpeg">Original (Gurih Asli)</option>
                                 <option value="Pedas" data-img="makped.jpeg">Pedas 🔥</option>
                                 <option value="Keju Manis" data-img="makenis.jpeg">Keju Manis 🧀</option>
@@ -242,21 +273,29 @@
                         </div>
 
                         <div>
-                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">Ukuran Kemasan</label>
-                            <select id="size-makaroni" onchange="updatePrice('makaroni')" class="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brandRed">
+                            <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1.5">Ukuran Kemasan</label>
+                            <select id="size-makaroni" onchange="updatePrice('makaroni')" class="w-full bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brandRed">
                                 <option value="200g">200 Gram - Rp 13.000</option>
                                 <option value="400g">400 Gram - Rp 25.000</option>
                             </select>
                         </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1.5">Jumlah</label>
+                            <div class="flex items-center gap-3">
+                                <button onclick="adjustQty('makaroni', -1)" class="w-8 h-8 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 font-bold flex items-center justify-center">-</button>
+                                <span id="qty-makaroni" class="font-bold text-sm w-6 text-center">1</span>
+                                <button onclick="adjustQty('makaroni', 1)" class="w-8 h-8 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 font-bold flex items-center justify-center">+</button>
+                            </div>
+                        </div>
                     </div>
 
-                    <!-- Harga & Action -->
                     <div class="flex items-center justify-between pt-2">
                         <div>
                             <span class="text-xs text-gray-400 block">Harga</span>
                             <span id="price-makaroni" class="text-2xl font-extrabold text-brandRed">Rp 13.000</span>
                         </div>
-                        <button onclick="addToCart('Makaroni Kering', 'flavor-makaroni', 'size-makaroni')" class="bg-brandYellow hover:bg-yellow-400 text-gray-900 font-bold px-5 py-3 rounded-xl transition-all flex items-center gap-2 shadow-md hover:shadow-lg">
+                        <button onclick="addToCart('Makaroni Kering', 'flavor-makaroni', 'size-makaroni', 'qty-makaroni')" class="bg-brandYellow hover:bg-yellow-400 text-gray-900 font-bold px-5 py-3 rounded-xl transition-all flex items-center gap-2 shadow-md hover:shadow-lg">
                             <i class="fas fa-cart-plus"></i> Tambah
                         </button>
                     </div>
@@ -267,36 +306,33 @@
     </section>
 
     <!-- SECTION KEUNGGULAN -->
-    <section id="keunggulan" class="bg-white py-16 border-t border-gray-100">
+    <section id="keunggulan" class="bg-white dark:bg-gray-800 py-16 border-t border-gray-100 dark:border-gray-700 transition-colors">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-3xl font-extrabold text-gray-900 text-center mb-12">Mengapa Memilih Tirsopjon Snack?</h2>
+            <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white text-center mb-12">Mengapa Memilih Tirsopjon Snack?</h2>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Keunggulan 1 -->
-                <div class="text-center p-6 rounded-2xl bg-gray-50 border border-gray-100 space-y-3 hover:shadow-md transition-shadow">
-                    <div class="w-14 h-14 bg-red-100 text-brandRed rounded-2xl flex items-center justify-center text-2xl mx-auto">
+                <div class="text-center p-6 rounded-2xl bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-700 space-y-3 hover:shadow-md transition-shadow">
+                    <div class="w-14 h-14 bg-red-100 dark:bg-red-950/50 text-brandRed rounded-2xl flex items-center justify-center text-2xl mx-auto">
                         <i class="fas fa-award"></i>
                     </div>
-                    <h3 class="font-bold text-lg text-gray-800">Bahan Premium</h3>
-                    <p class="text-gray-500 text-sm">Dibuat dengan bahan baku terbaik, minyak bersih, dan higiene terjamin.</p>
+                    <h3 class="font-bold text-lg text-gray-800 dark:text-gray-100">Bahan Premium</h3>
+                    <p class="text-gray-500 dark:text-gray-400 text-sm">Dibuat dengan bahan baku terbaik, minyak bersih, dan higiene terjamin.</p>
                 </div>
 
-                <!-- Keunggulan 2 -->
-                <div class="text-center p-6 rounded-2xl bg-gray-50 border border-gray-100 space-y-3 hover:shadow-md transition-shadow">
-                    <div class="w-14 h-14 bg-yellow-100 text-yellow-700 rounded-2xl flex items-center justify-center text-2xl mx-auto">
+                <div class="text-center p-6 rounded-2xl bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-700 space-y-3 hover:shadow-md transition-shadow">
+                    <div class="w-14 h-14 bg-yellow-100 dark:bg-yellow-950/50 text-yellow-700 dark:text-brandYellow rounded-2xl flex items-center justify-center text-2xl mx-auto">
                         <i class="fas fa-pepper-hot"></i>
                     </div>
-                    <h3 class="font-bold text-lg text-gray-800">Bumbu Melimpah</h3>
-                    <p class="text-gray-500 text-sm">4 Pilihan rasa favorit yang bumbunya meresap sempurna sampai gigitan terakhir.</p>
+                    <h3 class="font-bold text-lg text-gray-800 dark:text-gray-100">Bumbu Melimpah</h3>
+                    <p class="text-gray-500 dark:text-gray-400 text-sm">4 Pilihan rasa favorit yang bumbunya meresap sempurna sampai gigitan terakhir.</p>
                 </div>
 
-                <!-- Keunggulan 3 -->
-                <div class="text-center p-6 rounded-2xl bg-gray-50 border border-gray-100 space-y-3 hover:shadow-md transition-shadow">
-                    <div class="w-14 h-14 bg-red-100 text-brandRed rounded-2xl flex items-center justify-center text-2xl mx-auto">
+                <div class="text-center p-6 rounded-2xl bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-700 space-y-3 hover:shadow-md transition-shadow">
+                    <div class="w-14 h-14 bg-red-100 dark:bg-red-950/50 text-brandRed rounded-2xl flex items-center justify-center text-2xl mx-auto">
                         <i class="fas fa-box"></i>
                     </div>
-                    <h3 class="font-bold text-lg text-gray-800">Kemasan Sealed</h3>
-                    <p class="text-gray-500 text-sm">Dikemas rapat higienis dengan 2 pilihan ukuran (200g & 400g) agar tetap renyah.</p>
+                    <h3 class="font-bold text-lg text-gray-800 dark:text-gray-100">Kemasan Sealed</h3>
+                    <p class="text-gray-500 dark:text-gray-400 text-sm">Dikemas rapat higienis dengan 2 pilihan ukuran (200g & 400g) agar tetap renyah.</p>
                 </div>
             </div>
         </div>
@@ -307,7 +343,7 @@
         <div id="cart-backdrop" onclick="toggleCart()" class="absolute inset-0 bg-gray-900/50 opacity-0 transition-opacity duration-300"></div>
 
         <aside class="absolute inset-y-0 right-0 max-w-full flex pl-10">
-            <div id="cart-panel" class="w-screen max-w-md bg-white shadow-2xl flex flex-col translate-x-full transition-transform duration-300 ease-in-out pointer-events-auto">
+            <div id="cart-panel" class="w-screen max-w-md bg-white dark:bg-gray-800 shadow-2xl flex flex-col translate-x-full transition-transform duration-300 ease-in-out pointer-events-auto">
                 
                 <div class="p-6 bg-brandRed text-white flex items-center justify-between">
                     <h3 class="text-lg font-bold flex items-center gap-2">
@@ -320,8 +356,15 @@
                     <p class="text-center text-gray-400 py-10">Keranjang belanja Anda masih kosong.</p>
                 </div>
 
-                <div class="p-6 border-t border-gray-100 bg-gray-50 space-y-4">
-                    <div class="flex justify-between items-center text-lg font-bold text-gray-800">
+                <!-- Detail Pengiriman & Checkout -->
+                <div class="p-6 border-t border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 space-y-4">
+                    <div id="checkout-form" class="space-y-3">
+                        <input type="text" id="cust-name" placeholder="Nama Lengkap Pemesan *" class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-brandRed">
+                        <textarea id="cust-address" placeholder="Alamat Pengiriman *" rows="2" class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-brandRed"></textarea>
+                        <input type="text" id="cust-notes" placeholder="Catatan Tambahan (Opsional)" class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-brandRed">
+                    </div>
+
+                    <div class="flex justify-between items-center text-lg font-bold text-gray-800 dark:text-gray-100 pt-2 border-t dark:border-gray-800">
                         <span>Total Pembayaran:</span>
                         <span id="cart-total" class="text-brandRed">Rp 0</span>
                     </div>
@@ -336,8 +379,30 @@
     </div>
 
     <!-- Footer -->
-    <footer class="bg-gray-900 text-gray-400 py-8 text-center text-sm border-t border-gray-800">
-        <p class="text-white font-semibold">Tirsopjon Snack &copy; 2026. All Rights Reserved.</p>
+    <footer class="bg-gray-900 text-gray-400 py-12 text-sm border-t border-gray-800">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
+            <div>
+                <span class="font-extrabold text-2xl text-brandRed">Tirsopjon <span class="text-brandYellow">Snack</span></span>
+                <p class="mt-2 text-gray-400 max-w-sm">Camilan renyah, gurih, dan lezat untuk menemani hari-harimu!</p>
+            </div>
+
+            <!-- Tautan Media Sosial Footer -->
+            <div class="flex flex-col items-center md:items-end gap-3">
+                <span class="text-white font-semibold">Ikuti Media Sosial Kami:</span>
+                <div class="flex items-center gap-4">
+                    <a href="https://www.instagram.com/tirsopjonsnack.id?stkn=cnM4ejRqYXR6MjRv" target="_blank" class="w-10 h-10 rounded-full bg-gray-800 hover:bg-pink-600 text-white flex items-center justify-center transition-all shadow-md hover:scale-110" title="Instagram">
+                        <i class="fab fa-instagram text-xl"></i>
+                    </a>
+                    <a href="https://www.tiktok.com/@tirsopjonsnack.id?_r=1&_t=ZS-99abmcO9G3U" target="_blank" class="w-10 h-10 rounded-full bg-gray-800 hover:bg-white hover:text-black text-white flex items-center justify-center transition-all shadow-md hover:scale-110" title="TikTok">
+                        <i class="fab fa-tiktok text-xl"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 pt-6 border-t border-gray-800 text-center">
+            <p class="text-gray-500">Tirsopjon Snack &copy; 2026. All Rights Reserved.</p>
+        </div>
     </footer>
 
     <!-- JAVASCRIPT UTAMA -->
@@ -351,6 +416,42 @@
 
         let cart = [];
 
+        /* --- INISIALISASI HALAMAN --- */
+        document.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+        });
+
+        /* --- FUNGSI DARK MODE --- */
+        const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+        const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+
+        function initTheme() {
+            if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+                if (themeToggleLightIcon) themeToggleLightIcon.classList.remove('hidden');
+                if (themeToggleDarkIcon) themeToggleDarkIcon.classList.add('hidden');
+            } else {
+                document.documentElement.classList.remove('dark');
+                if (themeToggleDarkIcon) themeToggleDarkIcon.classList.remove('hidden');
+                if (themeToggleLightIcon) themeToggleLightIcon.classList.add('hidden');
+            }
+        }
+
+        function toggleDarkMode() {
+            if (themeToggleDarkIcon && themeToggleLightIcon) {
+                themeToggleDarkIcon.classList.toggle('hidden');
+                themeToggleLightIcon.classList.toggle('hidden');
+            }
+
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('color-theme', 'light');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('color-theme', 'dark');
+            }
+        }
+
         /* --- FUNGSI MUSIK --- */
         let isPlaying = false;
         const music = document.getElementById('bg-music');
@@ -362,7 +463,6 @@
             if (isPlaying) {
                 music.pause();
                 musicIcon.className = "fas fa-music text-xl";
-                musicIcon.classList.remove("animate-spin-slow");
                 musicPulse.classList.add("hidden");
                 if (musicStatus) musicStatus.innerText = "Putar Musik 🎵";
                 isPlaying = false;
@@ -378,11 +478,21 @@
             }
         }
 
+        /* --- FUNGSI TOAST --- */
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toast-message');
+            toastMessage.innerText = message;
+            toast.classList.remove('translate-x-full', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-x-full', 'opacity-0');
+            }, 2500);
+        }
+
         function formatRupiah(num) {
             return 'Rp ' + num.toLocaleString('id-ID');
         }
 
-        // Mengubah gambar pada card saat memilih varian rasa
         function updateProductImage(productKey) {
             const rasaSelect = document.getElementById(`flavor-${productKey}`);
             const cardImg = document.getElementById(`card-img-${productKey}`);
@@ -408,6 +518,14 @@
             }
         }
 
+        function adjustQty(productKey, amount) {
+            const qtyEl = document.getElementById(`qty-${productKey}`);
+            let currentQty = parseInt(qtyEl.innerText) || 1;
+            currentQty += amount;
+            if (currentQty < 1) currentQty = 1;
+            qtyEl.innerText = currentQty;
+        }
+
         function toggleCart() {
             const drawer = document.getElementById('cart-drawer');
             const backdrop = document.getElementById('cart-backdrop');
@@ -426,32 +544,51 @@
             }
         }
 
-        function addToCart(namaProduk, idRasa, idUkuran) {
+        function addToCart(namaProduk, idRasa, idUkuran, idQty) {
             const rasaEl = document.getElementById(idRasa);
             const ukuranEl = document.getElementById(idUkuran);
+            const qtyEl = document.getElementById(idQty);
 
-            if (!rasaEl || !ukuranEl) return;
+            if (!rasaEl || !ukuranEl || !qtyEl) return;
 
             const selectedOption = rasaEl.options[rasaEl.selectedIndex];
             const rasa = rasaEl.value;
             const ukuran = ukuranEl.value;
             const harga = HARGA[ukuran];
+            const qty = parseInt(qtyEl.innerText) || 1;
             
-            // Mengambil nama file gambar yang sesuai dengan varian rasa yang dipilih
-            const fotoProduk = selectedOption.getAttribute('data-img') || (namaProduk.includes('Pangsit') ? 'keripik-pangsit.jpg' : 'makaroni-kering.jpg');
+            const fotoProduk = selectedOption.getAttribute('data-img') || (namaProduk.includes('Pangsit') ? 'pangsitt.jpeg' : 'makaroni.jpeg');
 
-            const item = {
-                id: Date.now(),
-                nama: namaProduk,
-                rasa: rasa,
-                ukuran: ukuran,
-                harga: harga,
-                foto: fotoProduk
-            };
+            const existingIndex = cart.findIndex(item => item.nama === namaProduk && item.rasa === rasa && item.ukuran === ukuran);
 
-            cart.push(item);
+            if (existingIndex > -1) {
+                cart[existingIndex].qty += qty;
+            } else {
+                const item = {
+                    id: Date.now(),
+                    nama: namaProduk,
+                    rasa: rasa,
+                    ukuran: ukuran,
+                    harga: harga,
+                    qty: qty,
+                    foto: fotoProduk
+                };
+                cart.push(item);
+            }
+
             renderCart();
-            toggleCart();
+            showToast(`${namaProduk} (${qty}x) ditambahkan!`);
+        }
+
+        function changeCartQty(id, delta) {
+            const index = cart.findIndex(item => item.id === id);
+            if (index > -1) {
+                cart[index].qty += delta;
+                if (cart[index].qty <= 0) {
+                    cart.splice(index, 1);
+                }
+                renderCart();
+            }
         }
 
         function removeFromCart(id) {
@@ -460,79 +597,84 @@
         }
 
         function renderCart() {
-            const cartItemsContainer = document.getElementById('cart-items');
-            const cartCount = document.getElementById('cart-count');
-            const cartTotal = document.getElementById('cart-total');
+            const container = document.getElementById('cart-items');
+            const cartCountEl = document.getElementById('cart-count');
+            const cartTotalEl = document.getElementById('cart-total');
 
-            if (!cartItemsContainer || !cartCount || !cartTotal) return;
-
-            cartCount.innerText = cart.length;
+            let totalItems = 0;
+            let totalPrice = 0;
 
             if (cart.length === 0) {
-                cartItemsContainer.innerHTML = `
-                    <div class="text-center py-10 text-gray-400">
-                        <i class="fas fa-shopping-basket text-4xl mb-3 opacity-40"></i>
-                        <p class="text-sm">Keranjang belanja Anda masih kosong.</p>
-                    </div>
-                `;
-                cartTotal.innerText = 'Rp 0';
-                return;
+                container.innerHTML = `<p class="text-center text-gray-400 py-10">Keranjang belanja Anda masih kosong.</p>`;
+            } else {
+                container.innerHTML = cart.map(item => {
+                    const subtotal = item.harga * item.qty;
+                    totalItems += item.qty;
+                    totalPrice += subtotal;
+
+                    return `
+                        <div class="flex items-center justify-between gap-3 p-3 bg-gray-50 dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-700">
+                            <img src="${item.foto}" alt="${item.nama}" class="w-14 h-14 object-cover rounded-lg" onerror="this.src='LOGO.png'">
+                            <div class="flex-1">
+                                <h4 class="font-bold text-sm text-gray-800 dark:text-gray-100">${item.nama}</h4>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">Rasa: ${item.rasa} | Ukuran: ${item.ukuran}</p>
+                                <span class="text-xs font-bold text-brandRed">${formatRupiah(item.harga)}</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <button onclick="changeCartQty(${item.id}, -1)" class="w-6 h-6 bg-gray-200 dark:bg-gray-700 rounded text-xs font-bold">-</button>
+                                <span class="text-xs font-bold">${item.qty}</span>
+                                <button onclick="changeCartQty(${item.id}, 1)" class="w-6 h-6 bg-gray-200 dark:bg-gray-700 rounded text-xs font-bold">+</button>
+                                <button onclick="removeFromCart(${item.id})" class="text-red-500 hover:text-red-700 text-xs ml-1"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
             }
 
-            cartItemsContainer.innerHTML = '';
-            let total = 0;
-
             cart.forEach(item => {
-                total += item.harga;
-                const div = document.createElement('div');
-                div.className = 'flex items-center gap-3 p-3 bg-gray-50 rounded-xl border border-gray-100 shadow-sm';
-                div.innerHTML = `
-                    <img src="${item.foto}" alt="${item.nama}" class="w-14 h-14 object-cover rounded-lg border border-gray-200" onerror="this.src='LOGO.png'">
-                    <div class="flex-1">
-                        <h4 class="font-bold text-gray-800 text-sm">${item.nama} (${item.ukuran})</h4>
-                        <p class="text-xs text-gray-500">Rasa: <span class="font-medium text-brandRed">${item.rasa}</span></p>
-                        <p class="text-xs font-bold text-gray-800 mt-1">${formatRupiah(item.harga)}</p>
-                    </div>
-                    <button onclick="removeFromCart(${item.id})" class="text-gray-400 hover:text-red-600 p-2 text-sm transition-colors">
-                        <i class="fas fa-trash-alt"></i>
-                    </button>
-                `;
-                cartItemsContainer.appendChild(div);
+                totalItems += item.qty;
+                totalPrice += (item.harga * item.qty);
             });
 
-            cartTotal.innerText = formatRupiah(total);
+            if (cartCountEl) cartCountEl.innerText = totalItems;
+            if (cartTotalEl) cartTotalEl.innerText = formatRupiah(totalPrice);
         }
 
         function checkoutWA() {
             if (cart.length === 0) {
-                alert('Keranjang Anda masih kosong!');
+                alert("Keranjang belanjaan Anda masih kosong!");
                 return;
             }
 
-            let pesan = "Halo *Tirsopjon Snack*, saya mau pesan snack:\n\n";
-            let total = 0;
+            const name = document.getElementById('cust-name').value.trim();
+            const address = document.getElementById('cust-address').value.trim();
+            const notes = document.getElementById('cust-notes').value.trim();
 
+            if (!name || !address) {
+                alert("Mohon isi Nama Lengkap dan Alamat Pengiriman!");
+                return;
+            }
+
+            let textMessage = `Halo *Tirsopjon Snack*, saya mau pesan snack nih!\n\n`;
+            textMessage += `*DATA PEMESAN:*\n`;
+            textMessage += `👤 Nama: ${name}\n`;
+            textMessage += `📍 Alamat: ${address}\n`;
+            if (notes) textMessage += `📝 Catatan: ${notes}\n`;
+            textMessage += `\n*RINCIAN PESANAN:*\n`;
+
+            let totalPrice = 0;
             cart.forEach((item, index) => {
-                pesan += `${index + 1}. *${item.nama}*\n`;
-                pesan += `   • Ukuran: ${item.ukuran}\n`;
-                pesan += `   • Rasa: ${item.rasa}\n`;
-                pesan += `   • Harga: ${formatRupiah(item.harga)}\n\n`;
-                total += item.harga;
+                const subtotal = item.harga * item.qty;
+                totalPrice += subtotal;
+                textMessage += `${index + 1}. ${item.nama}\n   - Varian: ${item.rasa}\n   - Ukuran: ${item.ukuran}\n   - Jumlah: ${item.qty}x (${formatRupiah(subtotal)})\n`;
             });
 
-            pesan += `=========================\n`;
-            pesan += `*Total Belanja:* ${formatRupiah(total)}\n`;
-            pesan += `=========================\n\n`;
-            pesan += "Mohon diproses ya kak, terima kasih!";
+            textMessage += `\n*TOTAL PEMBAYARAN:* ${formatRupiah(totalPrice)}\n\n`;
+            textMessage += `Mohon info total ongkir & nomor rekening untuk pembayarannya ya min. Terima kasih!`;
 
-            const url = `https://wa.me/${NOMOR_WHATSAPP}?text=${encodeURIComponent(pesan)}`;
-            window.open(url, '_blank');
+            const encodedURL = `https://wa.me/${NOMOR_WHATSAPP}?text=${encodeURIComponent(textMessage)}`;
+            window.open(encodedURL, '_blank');
         }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            updatePrice('pangsit');
-            updatePrice('makaroni');
-        });
     </script>
 </body>
 </html>

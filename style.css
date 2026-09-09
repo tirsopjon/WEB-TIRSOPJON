@@ -3,8 +3,30 @@
     --brand-red-dark: #B71C1C;
     --brand-yellow: #FBC02D;
     --brand-yellow-light: #FFF8E1;
+    
+    /* Variable Warna Mode Terang (Default) */
+    --bg-primary: #FAFAFA;
+    --bg-card: #FFFFFF;
+    --text-main: #1F2937;
+    --border-color: #E5E7EB;
 }
 
+/* Variable Warna Mode Gelap */
+.dark {
+    --bg-primary: #111827;
+    --bg-card: #1F2937;
+    --text-main: #F9FAFB;
+    --border-color: #374151;
+}
+
+/* Base Body Styling */
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-main);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Utilities Brand Colors */
 .text-brandRed {
     color: var(--brand-red);
 }
@@ -33,6 +55,35 @@
     border-color: var(--brand-yellow);
 }
 
+/* Transition Global */
 button, a {
     transition: all 0.2s ease-in-out;
+}
+
+/* Custom Scrollbar untuk Mode Terang & Gelap */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+    background: #CBD5E1;
+    border-radius: 5px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+    background: #4B5563;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--brand-red);
+}
+
+/* Selection Highlight */
+::selection {
+    background-color: var(--brand-yellow);
+    color: #000000;
 }
