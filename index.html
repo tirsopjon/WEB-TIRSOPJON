@@ -69,14 +69,14 @@
     </audio>
 
     <!-- Toast Notification -->
-    <div id="toast" class="fixed top-24 right-5 z-50 bg-gray-900 text-white px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 transition-all duration-300 transform translate-x-full opacity-0">
+    <div id="toast" class="fixed top-24 right-5 z-50 bg-gray-900 text-white px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 transition-all duration-300 transform translate-x-full opacity-0 pointer-events-none">
         <i class="fas fa-check-circle text-green-400 text-xl"></i>
         <span id="toast-message" class="text-sm font-medium">Berhasil ditambahkan!</span>
     </div>
 
     <!-- Tombol Musik Melayang -->
     <div class="fixed bottom-6 left-6 z-50 flex items-center gap-3">
-        <button id="music-toggle-btn" onclick="toggleMusic()" class="relative bg-brandRed hover:bg-brandRedDark text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center border-2 border-brandYellow focus:outline-none transition-transform hover:scale-110 active:scale-95 group">
+        <button id="music-toggle-btn" type="button" onclick="toggleMusic()" class="relative bg-brandRed hover:bg-brandRedDark text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center border-2 border-brandYellow focus:outline-none transition-transform hover:scale-110 active:scale-95 group">
             <i id="music-icon" class="fas fa-music text-xl"></i>
             <span id="music-pulse" class="hidden absolute -inset-1 rounded-full bg-brandYellow/40 -z-10 animate-ping"></span>
         </button>
@@ -107,22 +107,22 @@
             <div class="flex items-center gap-2 sm:gap-3">
                 <!-- Sosial Media Fast Access (Header) -->
                 <div class="flex items-center gap-1.5 border-r border-gray-200 dark:border-gray-700 pr-2 sm:pr-3">
-                    <a href="https://instagram.com/tirsopjon.snack" target="_blank" class="p-2 rounded-full text-pink-600 hover:bg-pink-50 dark:hover:bg-gray-800 transition-colors" title="Instagram">
+                    <a href="https://instagram.com/tirsopjonsnack.id" target="_blank" class="p-2 rounded-full text-pink-600 hover:bg-pink-50 dark:hover:bg-gray-800 transition-colors" title="Instagram">
                         <i class="fab fa-instagram text-lg"></i>
                     </a>
-                    <a href="https://tiktok.com/@tirsopjon.snack" target="_blank" class="p-2 rounded-full text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" title="TikTok">
+                    <a href="https://tiktok.com/@tirsopjonsnack.id" target="_blank" class="p-2 rounded-full text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" title="TikTok">
                         <i class="fab fa-tiktok text-lg"></i>
                     </a>
                 </div>
 
                 <!-- Tombol Dark Mode Toggle -->
-                <button id="theme-toggle" onclick="toggleDarkMode()" class="p-2.5 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-yellow-400 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors focus:outline-none" title="Ubah Mode">
+                <button id="theme-toggle" type="button" onclick="toggleDarkMode()" class="p-2.5 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-yellow-400 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors focus:outline-none" title="Ubah Mode">
                     <i id="theme-toggle-dark-icon" class="fas fa-moon text-lg hidden"></i>
                     <i id="theme-toggle-light-icon" class="fas fa-sun text-lg hidden"></i>
                 </button>
 
                 <!-- Tombol Keranjang -->
-                <button onclick="toggleCart()" class="relative bg-red-50 dark:bg-gray-800 hover:bg-red-100 dark:hover:bg-gray-700 p-3 rounded-full text-brandRed transition-all duration-200 focus:outline-none">
+                <button type="button" onclick="toggleCart()" class="relative bg-red-50 dark:bg-gray-800 hover:bg-red-100 dark:hover:bg-gray-700 p-3 rounded-full text-brandRed transition-all duration-200 focus:outline-none">
                     <i class="fas fa-shopping-basket text-xl"></i>
                     <span id="cart-count" class="absolute -top-1 -right-1 bg-brandYellow text-gray-900 font-bold text-xs w-5 h-5 rounded-full flex items-center justify-center border-2 border-white dark:border-gray-900 shadow-sm">0</span>
                 </button>
@@ -152,12 +152,12 @@
                     
                     <!-- Sosial Media Links di Hero -->
                     <div class="flex items-center gap-3 pt-2 sm:pt-0">
-                        <a href="https://www.instagram.com/tirsopjonsnack.id?stkn=cnM4ejRqYXR6MjRv" target="_blank" class="w-10 h-10 rounded-full bg-gray-800 hover:bg-pink-600 text-white flex items-center justify-center transition-all shadow-md hover:scale-110" title="Instagram">
-                        <i class="fab fa-instagram text-xl"></i>
-                    </a>
-                    <a href="https://www.tiktok.com/@tirsopjonsnack.id?_r=1&_t=ZS-99abmcO9G3U" target="_blank" class="w-10 h-10 rounded-full bg-gray-800 hover:bg-white hover:text-black text-white flex items-center justify-center transition-all shadow-md hover:scale-110" title="TikTok">
-                        <i class="fab fa-tiktok text-xl"></i>
-                    </a>
+                        <a href="https://www.instagram.com/tirsopjonsnack.id" target="_blank" class="w-10 h-10 rounded-full bg-gray-800 hover:bg-pink-600 text-white flex items-center justify-center transition-all shadow-md hover:scale-110" title="Instagram">
+                            <i class="fab fa-instagram text-xl"></i>
+                        </a>
+                        <a href="https://www.tiktok.com/@tirsopjonsnack.id" target="_blank" class="w-10 h-10 rounded-full bg-gray-800 hover:bg-white hover:text-black text-white flex items-center justify-center transition-all shadow-md hover:scale-110" title="TikTok">
+                            <i class="fab fa-tiktok text-xl"></i>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -188,7 +188,7 @@
             <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-xl shadow-gray-100 dark:shadow-none overflow-hidden hover:border-brandYellow transition-all duration-300 flex flex-col group">
                 
                 <div class="relative h-56 bg-gradient-to-r from-red-500 to-brandRed overflow-hidden flex items-end">
-                    <img id="card-img-pangsit" src="pangsitt.jpeg" alt="Keripik Pangsit" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.src='https://via.placeholder.com/400x250?text=Keripik+Pangsit'">
+                    <img id="card-img-pangsit" src="pangori.jpeg" alt="Keripik Pangsit" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.src='pangsitt.jpeg'">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
                     <span class="absolute top-4 right-4 bg-brandYellow text-gray-900 text-xs font-bold px-3 py-1 rounded-full shadow z-10">Best Seller</span>
                     <div class="relative z-10 p-6 text-white w-full">
@@ -223,9 +223,9 @@
                         <div>
                             <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1.5">Jumlah</label>
                             <div class="flex items-center gap-3">
-                                <button onclick="adjustQty('pangsit', -1)" class="w-8 h-8 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 font-bold flex items-center justify-center">-</button>
+                                <button type="button" onclick="adjustQty('pangsit', -1)" class="w-8 h-8 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 font-bold flex items-center justify-center">-</button>
                                 <span id="qty-pangsit" class="font-bold text-sm w-6 text-center">1</span>
-                                <button onclick="adjustQty('pangsit', 1)" class="w-8 h-8 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 font-bold flex items-center justify-center">+</button>
+                                <button type="button" onclick="adjustQty('pangsit', 1)" class="w-8 h-8 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 font-bold flex items-center justify-center">+</button>
                             </div>
                         </div>
                     </div>
@@ -235,7 +235,7 @@
                             <span class="text-xs text-gray-400 block">Harga</span>
                             <span id="price-pangsit" class="text-2xl font-extrabold text-brandRed">Rp 13.000</span>
                         </div>
-                        <button onclick="addToCart('Keripik Pangsit', 'flavor-pangsit', 'size-pangsit', 'qty-pangsit')" class="bg-brandYellow hover:bg-yellow-400 text-gray-900 font-bold px-5 py-3 rounded-xl transition-all flex items-center gap-2 shadow-md hover:shadow-lg">
+                        <button type="button" onclick="addToCart('Keripik Pangsit', 'flavor-pangsit', 'size-pangsit', 'qty-pangsit')" class="bg-brandYellow hover:bg-yellow-400 text-gray-900 font-bold px-5 py-3 rounded-xl transition-all flex items-center gap-2 shadow-md hover:shadow-lg">
                             <i class="fas fa-cart-plus"></i> Tambah
                         </button>
                     </div>
@@ -246,7 +246,7 @@
             <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-xl shadow-gray-100 dark:shadow-none overflow-hidden hover:border-brandYellow transition-all duration-300 flex flex-col group">
                 
                 <div class="relative h-56 bg-gradient-to-r from-red-500 to-brandRed overflow-hidden flex items-end">
-                    <img id="card-img-makaroni" src="makaroni.jpeg" alt="Makaroni Kering" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.src='https://via.placeholder.com/400x250?text=Makaroni+Kering'">
+                    <img id="card-img-makaroni" src="makori.jpeg" alt="Makaroni Kering" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.src='makaroni.jpeg'">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
                     <span class="absolute top-4 right-4 bg-brandYellow text-gray-900 text-xs font-bold px-3 py-1 rounded-full shadow z-10">Favorit</span>
                     <div class="relative z-10 p-6 text-white w-full">
@@ -281,9 +281,9 @@
                         <div>
                             <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1.5">Jumlah</label>
                             <div class="flex items-center gap-3">
-                                <button onclick="adjustQty('makaroni', -1)" class="w-8 h-8 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 font-bold flex items-center justify-center">-</button>
+                                <button type="button" onclick="adjustQty('makaroni', -1)" class="w-8 h-8 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 font-bold flex items-center justify-center">-</button>
                                 <span id="qty-makaroni" class="font-bold text-sm w-6 text-center">1</span>
-                                <button onclick="adjustQty('makaroni', 1)" class="w-8 h-8 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 font-bold flex items-center justify-center">+</button>
+                                <button type="button" onclick="adjustQty('makaroni', 1)" class="w-8 h-8 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 font-bold flex items-center justify-center">+</button>
                             </div>
                         </div>
                     </div>
@@ -293,7 +293,7 @@
                             <span class="text-xs text-gray-400 block">Harga</span>
                             <span id="price-makaroni" class="text-2xl font-extrabold text-brandRed">Rp 13.000</span>
                         </div>
-                        <button onclick="addToCart('Makaroni Kering', 'flavor-makaroni', 'size-makaroni', 'qty-makaroni')" class="bg-brandYellow hover:bg-yellow-400 text-gray-900 font-bold px-5 py-3 rounded-xl transition-all flex items-center gap-2 shadow-md hover:shadow-lg">
+                        <button type="button" onclick="addToCart('Makaroni Kering', 'flavor-makaroni', 'size-makaroni', 'qty-makaroni')" class="bg-brandYellow hover:bg-yellow-400 text-gray-900 font-bold px-5 py-3 rounded-xl transition-all flex items-center gap-2 shadow-md hover:shadow-lg">
                             <i class="fas fa-cart-plus"></i> Tambah
                         </button>
                     </div>
@@ -347,7 +347,7 @@
                     <h3 class="text-lg font-bold flex items-center gap-2">
                         <i class="fas fa-shopping-bag"></i> Keranjang Belanja
                     </h3>
-                    <button onclick="toggleCart()" class="text-white hover:text-brandYellow text-2xl focus:outline-none">&times;</button>
+                    <button type="button" onclick="toggleCart()" class="text-white hover:text-brandYellow text-2xl focus:outline-none">&times;</button>
                 </div>
 
                 <div id="cart-items" class="flex-1 p-6 overflow-y-auto space-y-4">
@@ -367,7 +367,7 @@
                         <span id="cart-total" class="text-brandRed">Rp 0</span>
                     </div>
 
-                    <button onclick="checkoutWA()" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3.5 rounded-xl transition-all shadow-md flex items-center justify-center gap-2">
+                    <button type="button" onclick="checkoutWA()" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3.5 rounded-xl transition-all shadow-md flex items-center justify-center gap-2">
                         <i class="fab fa-whatsapp text-xl"></i> Pesan via WhatsApp
                     </button>
                 </div>
@@ -388,10 +388,10 @@
             <div class="flex flex-col items-center md:items-end gap-3">
                 <span class="text-white font-semibold">Ikuti Media Sosial Kami:</span>
                 <div class="flex items-center gap-4">
-                    <a href="https://www.instagram.com/tirsopjonsnack.id?stkn=cnM4ejRqYXR6MjRv" target="_blank" class="w-10 h-10 rounded-full bg-gray-800 hover:bg-pink-600 text-white flex items-center justify-center transition-all shadow-md hover:scale-110" title="Instagram">
+                    <a href="https://www.instagram.com/tirsopjonsnack.id" target="_blank" class="w-10 h-10 rounded-full bg-gray-800 hover:bg-pink-600 text-white flex items-center justify-center transition-all shadow-md hover:scale-110" title="Instagram">
                         <i class="fab fa-instagram text-xl"></i>
                     </a>
-                    <a href="https://www.tiktok.com/@tirsopjonsnack.id?_r=1&_t=ZS-99abmcO9G3U" target="_blank" class="w-10 h-10 rounded-full bg-gray-800 hover:bg-white hover:text-black text-white flex items-center justify-center transition-all shadow-md hover:scale-110" title="TikTok">
+                    <a href="https://www.tiktok.com/@tirsopjonsnack.id" target="_blank" class="w-10 h-10 rounded-full bg-gray-800 hover:bg-white hover:text-black text-white flex items-center justify-center transition-all shadow-md hover:scale-110" title="TikTok">
                         <i class="fab fa-tiktok text-xl"></i>
                     </a>
                 </div>
@@ -413,17 +413,20 @@
         };
 
         let cart = [];
+        let isPlaying = false;
 
         /* --- INISIALISASI HALAMAN --- */
         document.addEventListener('DOMContentLoaded', () => {
             initTheme();
+            updatePrice('pangsit');
+            updatePrice('makaroni');
         });
 
         /* --- FUNGSI DARK MODE --- */
-        const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
-        const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
-
         function initTheme() {
+            const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+            const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+
             if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
                 document.documentElement.classList.add('dark');
                 if (themeToggleLightIcon) themeToggleLightIcon.classList.remove('hidden');
@@ -436,6 +439,9 @@
         }
 
         function toggleDarkMode() {
+            const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+            const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+
             if (themeToggleDarkIcon && themeToggleLightIcon) {
                 themeToggleDarkIcon.classList.toggle('hidden');
                 themeToggleLightIcon.classList.toggle('hidden');
@@ -451,27 +457,28 @@
         }
 
         /* --- FUNGSI MUSIK --- */
-        let isPlaying = false;
-        const music = document.getElementById('bg-music');
-        const musicIcon = document.getElementById('music-icon');
-        const musicPulse = document.getElementById('music-pulse');
-        const musicStatus = document.getElementById('music-status');
-
         function toggleMusic() {
+            const music = document.getElementById('bg-music');
+            const musicIcon = document.getElementById('music-icon');
+            const musicPulse = document.getElementById('music-pulse');
+            const musicStatus = document.getElementById('music-status');
+
+            if (!music) return;
+
             if (isPlaying) {
                 music.pause();
-                musicIcon.className = "fas fa-music text-xl";
-                musicPulse.classList.add("hidden");
+                if (musicIcon) musicIcon.className = "fas fa-music text-xl";
+                if (musicPulse) musicPulse.classList.add("hidden");
                 if (musicStatus) musicStatus.innerText = "Putar Musik 🎵";
                 isPlaying = false;
             } else {
                 music.play().then(() => {
-                    musicIcon.className = "fas fa-compact-disc text-2xl animate-spin-slow";
-                    musicPulse.classList.remove("hidden");
+                    if (musicIcon) musicIcon.className = "fas fa-compact-disc text-2xl animate-spin-slow";
+                    if (musicPulse) musicPulse.classList.remove("hidden");
                     if (musicStatus) musicStatus.innerText = "Jeda Musik ⏸️";
                     isPlaying = true;
                 }).catch(err => {
-                    console.log("Autoplay tercegah browser, butuh interaksi pengguna.", err);
+                    console.log("Autoplay tercegah browser:", err);
                 });
             }
         }
@@ -480,6 +487,8 @@
         function showToast(message) {
             const toast = document.getElementById('toast');
             const toastMessage = document.getElementById('toast-message');
+            if (!toast || !toastMessage) return;
+
             toastMessage.innerText = message;
             toast.classList.remove('translate-x-full', 'opacity-0');
             setTimeout(() => {
@@ -518,6 +527,7 @@
 
         function adjustQty(productKey, amount) {
             const qtyEl = document.getElementById(`qty-${productKey}`);
+            if (!qtyEl) return;
             let currentQty = parseInt(qtyEl.innerText) || 1;
             currentQty += amount;
             if (currentQty < 1) currentQty = 1;
@@ -574,6 +584,9 @@
                 cart.push(item);
             }
 
+            // Reset jumlah input kembali ke 1 setelah ditambahkan
+            qtyEl.innerText = '1';
+
             renderCart();
             showToast(`${namaProduk} (${qty}x) ditambahkan!`);
         }
@@ -599,17 +612,12 @@
             const cartCountEl = document.getElementById('cart-count');
             const cartTotalEl = document.getElementById('cart-total');
 
-            let totalItems = 0;
-            let totalPrice = 0;
+            if (!container) return;
 
             if (cart.length === 0) {
                 container.innerHTML = `<p class="text-center text-gray-400 py-10">Keranjang belanja Anda masih kosong.</p>`;
             } else {
                 container.innerHTML = cart.map(item => {
-                    const subtotal = item.harga * item.qty;
-                    totalItems += item.qty;
-                    totalPrice += subtotal;
-
                     return `
                         <div class="flex items-center justify-between gap-3 p-3 bg-gray-50 dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-700">
                             <img src="${item.foto}" alt="${item.nama}" class="w-14 h-14 object-cover rounded-lg" onerror="this.src='LOGO.png'">
@@ -619,20 +627,19 @@
                                 <span class="text-xs font-bold text-brandRed">${formatRupiah(item.harga)}</span>
                             </div>
                             <div class="flex items-center gap-2">
-                                <button onclick="changeCartQty(${item.id}, -1)" class="w-6 h-6 bg-gray-200 dark:bg-gray-700 rounded text-xs font-bold">-</button>
+                                <button type="button" onclick="changeCartQty(${item.id}, -1)" class="w-6 h-6 bg-gray-200 dark:bg-gray-700 rounded text-xs font-bold">-</button>
                                 <span class="text-xs font-bold">${item.qty}</span>
-                                <button onclick="changeCartQty(${item.id}, 1)" class="w-6 h-6 bg-gray-200 dark:bg-gray-700 rounded text-xs font-bold">+</button>
-                                <button onclick="removeFromCart(${item.id})" class="text-red-500 hover:text-red-700 text-xs ml-1"><i class="fas fa-trash"></i></button>
+                                <button type="button" onclick="changeCartQty(${item.id}, 1)" class="w-6 h-6 bg-gray-200 dark:bg-gray-700 rounded text-xs font-bold">+</button>
+                                <button type="button" onclick="removeFromCart(${item.id})" class="text-red-500 hover:text-red-700 text-xs ml-1"><i class="fas fa-trash"></i></button>
                             </div>
                         </div>
                     `;
                 }).join('');
             }
 
-            cart.forEach(item => {
-                totalItems += item.qty;
-                totalPrice += (item.harga * item.qty);
-            });
+            // Dihitung bersih satu kali saja dengan reduce()
+            const totalItems = cart.reduce((acc, item) => acc + item.qty, 0);
+            const totalPrice = cart.reduce((acc, item) => acc + (item.harga * item.qty), 0);
 
             if (cartCountEl) cartCountEl.innerText = totalItems;
             if (cartTotalEl) cartTotalEl.innerText = formatRupiah(totalPrice);
