@@ -14,11 +14,11 @@ let isPlaying = false;
 
 /* --- FUNGSI REDIRECT MEDIA SOSIAL --- */
 function openInstagram() {
-    window.open(`https://www.instagram.com/${USERNAME_INSTAGRAM}`, '_blank');
+    window.open(`https://www.instagram.com/tirsopjonsnack.id?stkn=cnM4ejRqYXR6MjRv"`, '_blank');
 }
 
 function openTikTok() {
-    window.open(`https://www.tiktok.com/@${USERNAME_TIKTOK}`, '_blank');
+    window.open(`https://www.tiktok.com/@tirsopjonsnack.id?_r=1&_t=ZS-99abmcO9G3U`, '_blank');
 }
 
 /* --- FUNGSI DARK MODE --- */
